@@ -1,0 +1,51 @@
+
+name: AI Daily Summary
+
+on:
+  schedule:
+    - cron: '30 17 * * *' # 每天 UTC 17:30 运行
+  workflow_dispatch: # 允许手动触发测试
+
+permissions:
+  contents: read
+  issues: write # 如果需要AI回复Issue，需添加此权限
+
+jobs:
+  ai-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整历史以便AI分析上下文
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install GitHub Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Run AI Analysis
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 使用编程模式非交互运行
+          # --allow-tool='shell(git:*)' 允许AI执行git命令获取上下文
+          # --no-ask-user 跳过人工确认，适合自动化流程
+          copilot -p "Review the git log for the last 24 hours. Summarize the key changes, potential risks, and suggest any follow-up actions. Output in Markdown format." \
+            --allow-tool='shell(git:*)' \
+            --no-ask-user > ai_report.md
+
+      - name: Upload Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-daily-report
+          path: ai_report.md
+
+      - name: Post Summary to Issue (Optional)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Report generated successfully. Check artifacts for details."
+          # 此处可扩展为使用 gh issue create 或 comment 将结果发布到GitHub
