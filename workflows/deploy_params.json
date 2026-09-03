@@ -1,0 +1,12 @@
+
+{
+  "model_name": "Qwen3-14B-AWQ",
+  "model_path": "/data/qwen3-14b-awq",
+  "gpu_memory_utilization": 0.9,
+  "max_model_len": 8192,
+  "tensor_parallel_size": 1,
+  "port": 8000,
+  "host": "0.0.0.0",
+  "dtype": "auto",
+  "trust_remote_code": true
+}

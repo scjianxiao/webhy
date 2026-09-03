@@ -1,0 +1,50 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Model Data (Optional: Uncomment if you want to ignore large model files in Git)
+# /data/
+# *.bin
+# *.safetensors
+# *.gguf
+
+<code_start project_name=qwen_deploy_config filename=requirements.txt title=项目依赖配置文件 entrypoint=false runnable=false project_final_file=true>
+vllm>=0.2.7
+modelscope>=1.9.0
+requests>=2.31.0
